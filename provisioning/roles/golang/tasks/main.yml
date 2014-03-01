@@ -2,19 +2,15 @@
   file: dest=/usr/local state=directory
 
 - name: Download golang
-  sudo: yes
-  shell: cd /usr/local; wget http://go.googlecode.com/files/go{{ golang_version }}.linux-386.tar.gz
+  get_url: url=http://go.googlecode.com/files/go{{ golang_version }}.linux-386.tar.gz dest=/usr/local
 
 - name: Extract archive
   sudo: yes
-  shell: cd /usr/local; tar -C /usr/local -xzf go{{ golang_version }}.linux-386.tar.gz
+  command: chdir=/usr/local creates=go{{ golang_version }}.linux-386 tar -xzf go{{ golang_version }}.linux-386.tar.gz
 
-- name: Remove downloaded archive
-  sudo: yes
-  shell: cd /usr/local; rm go{{ golang_version }}.linux-386.tar.gz
-
+# FIXME: this is not working
 - name: Add the PATH env variable
-  shell: echo "export PATH=$PATH:/usr/local/go/bin" > ~/.bash_profile
+  lineinfile: dest=~/.profile insertafter=EOF line="export PATH=$PATH:/usr/local/go/bin" create=yes
 
 - name: Create hello world go app
   file: dest=~/hello_world_go state=directory
