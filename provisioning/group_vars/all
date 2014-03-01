@@ -1,0 +1,36 @@
+# Which user do we want to install ruby for
+host:
+  user: vagrant
+
+golang_version: 1.2
+
+postgresql:
+  version: 9.3
+  repo: 'deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main'
+  install_development_headers: true
+
+  user: postgres
+  group: postgres
+
+  custom:
+    user: vagrant
+    password: password
+    role_attrs: superuser,createdb,login
+
+  config:
+    shared_buffers: 64MB
+    work_mem: 1MB
+
+    checkpoint_segments: 3
+    checkpoint_completion_target: 0.5
+
+    effective_cache_size: 128MB
+
+redis:
+  deb:
+    package: 'redis-server'
+    service: 'redis-server'
+
+zsh:
+  theme: 'agnoster'
+

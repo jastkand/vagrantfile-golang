@@ -1,0 +1,11 @@
+- hosts: vagrant
+  sudo: true
+  roles:
+    # - common
+    # - nodejs
+    - git
+    - mercurial
+    - golang
+    # - postgresql
+    # - redis
+    - oh_my_zsh
