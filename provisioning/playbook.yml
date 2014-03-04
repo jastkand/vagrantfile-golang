@@ -1,8 +1,8 @@
 - hosts: vagrant
   sudo: true
   roles:
-    # - common
-    # - nodejs
+    - common
+    - nodejs
     - git
     - mercurial
     - golang

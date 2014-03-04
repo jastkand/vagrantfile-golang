@@ -8,12 +8,17 @@
   sudo: yes
   command: chdir=/usr/local creates=go{{ golang_version }}.linux-386 tar -xzf go{{ golang_version }}.linux-386.tar.gz
 
-# FIXME: this is not working
-- name: Add the PATH env variable
-  lineinfile: dest=~/.profile insertafter=EOF line="export PATH=$PATH:/usr/local/go/bin" create=yes
+- name: Ensure fragments bash dir exists
+  file: dest=~{{ host.user }}/.bash.d/ state=directory
+
+- name: Install golang bash file
+  copy: src=golang.bash dest=~{{ host.user }}/.bash.d/golang.bash mode=700 owner={{ host.user }}
+
+- name: Source golang bash file in dot bashrc
+  lineinfile: dest=~{{ host.user }}/.bash_profile regexp="golang" insertafter=EOF line="source ~/.bash.d/golang.bash" create=yes owner={{ host.user }}
 
 - name: Create hello world go app
-  file: dest=~/hello_world_go state=directory
+  file: dest=~{{ host.user }}/go/src/hello_world_go state=directory
 
 - name: Add app source
-  copy: src=hello.go dest=~/hello_world_go/hello.go mode=700 owner={{ host.user }}
+  copy: src=hello.go dest=~{{ host.user }}/go/src/hello_world_go/hello.go mode=700 owner={{ host.user }}
